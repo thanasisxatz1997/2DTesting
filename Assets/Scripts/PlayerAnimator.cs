@@ -10,6 +10,9 @@ public class PlayerAnimator : MonoBehaviour
     private const string IS_MOVING = "isMoving";
     private const string IS_ATTACKING = "isAttacking";
     private const string ATTACK_TRIGGER = "attackTrigger";
+    private const string ATTACK_TRIGGER2 = "attackTrigger2";
+    private const string ATTACK_TRIGGER3 = "attackTrigger3";
+    private const string ATTACK_TRIGGER4 = "attackTrigger4";
     private const string RUNNINGATTACK_TRIGGER = "runningAttackTrigger";
     private const string JUMP_TRIGGER = "jumpTrigger";
     private const string RUNNING_ATTACK_CD = "runningAttackCD";
@@ -57,7 +60,28 @@ public class PlayerAnimator : MonoBehaviour
         }
         else
         {
-            animator.SetTrigger(ATTACK_TRIGGER);
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("2HAttack"))
+            {
+                animator.SetTrigger(ATTACK_TRIGGER2);
+                animator.ResetTrigger(ATTACK_TRIGGER);
+            }
+            else if (animator.GetCurrentAnimatorStateInfo(0).IsName("2HAttackCombo2"))
+            {
+                animator.SetTrigger(ATTACK_TRIGGER3);
+                animator.ResetTrigger(ATTACK_TRIGGER2);
+                animator.ResetTrigger(ATTACK_TRIGGER);
+            }
+            else if (animator.GetCurrentAnimatorStateInfo(0).IsName("2HAttackCombo3"))
+            {
+                animator.SetTrigger(ATTACK_TRIGGER4);
+                animator.ResetTrigger(ATTACK_TRIGGER3);
+                animator.ResetTrigger(ATTACK_TRIGGER2);
+                animator.ResetTrigger(ATTACK_TRIGGER);
+            }
+            else
+            {
+                animator.SetTrigger(ATTACK_TRIGGER);
+            }
         }
         
     }
@@ -80,15 +104,17 @@ public class PlayerAnimator : MonoBehaviour
             animator.SetBool(IS_GROUNDED, false);
         }
         animator.SetBool(IS_FALLING, player.isFalling);
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("RunningAttack2H") || animator.GetCurrentAnimatorStateInfo(0).IsName("2HAttack"))
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("RunningAttack2H") || animator.GetCurrentAnimatorStateInfo(0).IsName("2HAttack") || animator.GetCurrentAnimatorStateInfo(0).IsName("2HAttackCombo2") || animator.GetCurrentAnimatorStateInfo(0).IsName("2HAttackCombo3") || animator.GetCurrentAnimatorStateInfo(0).IsName("2HAttackCombo4"))
         {
             player.EnableSlashTrailRenderer();
             player.isAttacking = true;
+            animator.SetBool(IS_ATTACKING,true);
         }
         else
         {
             player.DisableSlashTrailRenderer();
             player.isAttacking=false;
+            animator.SetBool(IS_ATTACKING, false);
         }
     }
 }

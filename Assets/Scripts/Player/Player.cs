@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     public bool isGrounded = false;
     public bool isFalling = false;
     public bool isTouchingWall = false;
-    public bool isAttacking;
+    public bool isAttacking=false;
     public bool isJumping;
     public bool isDashing = false;
     public bool isRunning = false;
