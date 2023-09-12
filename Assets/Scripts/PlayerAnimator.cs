@@ -21,8 +21,9 @@ public class PlayerAnimator : MonoBehaviour
     private const string THROW_ATTACK_TRIGGER = "throwAttackTrigger";
     private const string DASH_TRIGGER = "dashTrigger";
     private const string IS_GROUNDED = "isGrounded";
+    private string[] ComboAttackTriggerArr = { ATTACK_TRIGGER, ATTACK_TRIGGER2, ATTACK_TRIGGER3, ATTACK_TRIGGER4 };
+    private int comboAttackCount=0;
 
-    
 
     private void Start()
     {
@@ -60,7 +61,18 @@ public class PlayerAnimator : MonoBehaviour
         }
         else
         {
-            if (animator.GetCurrentAnimatorStateInfo(0).IsName("2HAttack"))
+            //ComboAttack
+            if (player.isAttacking&&comboAttackCount<3)
+            {
+                //animator.ResetTrigger(ComboAttackTriggerArr[comboAttackCount]);
+                comboAttackCount++;
+                animator.SetTrigger(ComboAttackTriggerArr[comboAttackCount]);
+            }
+            else
+            {
+                animator.SetTrigger(ATTACK_TRIGGER);
+            }
+            /*if (animator.GetCurrentAnimatorStateInfo(0).IsName("2HAttack"))
             {
                 animator.SetTrigger(ATTACK_TRIGGER2);
                 animator.ResetTrigger(ATTACK_TRIGGER);
@@ -81,7 +93,7 @@ public class PlayerAnimator : MonoBehaviour
             else
             {
                 animator.SetTrigger(ATTACK_TRIGGER);
-            }
+            }*/
         }
         
     }
@@ -113,6 +125,7 @@ public class PlayerAnimator : MonoBehaviour
         else
         {
             player.DisableSlashTrailRenderer();
+            comboAttackCount = 0;
             player.isAttacking=false;
             animator.SetBool(IS_ATTACKING, false);
         }
